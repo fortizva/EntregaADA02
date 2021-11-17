@@ -22,11 +22,14 @@ class Grafo {
 	
 	float MatAdyacencia[MAX][MAX];    //Conjunto de aristas valuadas  que tendrá nuestro Grafo, (Matriz de Adyacencia)
 	
-/********************************************************************************
-/*	De esta forma tienes lo imprescindible para un grafo; los vértices y las aristas.
-/*	Deberás añadir más matrices, si lo consideras necesario para resolver el ejercicio.
-/*	Son las matrices que resultan de aplicar los diferentes algoritmos que vayas necesitando.
-/**********************************************************************************************************
+// ********************************************************************************
+//	De esta forma tienes lo imprescindible para un grafo; los vértices y las aristas.
+//	Deberás añadir más matrices, si lo consideras necesario para resolver el ejercicio.
+//	Son las matrices que resultan de aplicar los diferentes algoritmos que vayas necesitando.
+// **********************************************************************************************************
+
+	float MatFloyd[MAX][MAX];
+	int MatP[MAX][MAX];
 
 public:
 
@@ -50,10 +53,18 @@ public:
 	void CargarDatos();
 
 	
-/********************************************************************************
-/*	Deberás añadir más métodos necesarios para resolver el ejercicio.
-/*	Documentarlos de forma correcta.
-/**********************************************************************************************************
+// ********************************************************************************
+//	Deberás añadir más métodos necesarios para resolver el ejercicio.
+//	Documentarlos de forma correcta.
+// **********************************************************************************************************
+
+	void insertNodo(string n);
+	void insertArco(string orgi, string dest, float dist);
+	bool pertenece(string n);
+	float Arco(string orig, string dist);
+	void Adyacentes(string nodo, float lista[MAX]);
+	void Floyd();
+	// ...
 
 
 	/*
@@ -61,7 +72,7 @@ public:
 	 * POST: {Muestra la matriz que se indica como parámetro de entrada.
 	 * Complejidad: O(n^2)
 	 */
-	void MostrarDatos(float [][] matriz);
+	void MostrarDatos(float matriz[MAX][MAX]);
 
 
 
