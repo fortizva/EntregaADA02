@@ -63,7 +63,8 @@ public:
 	bool pertenece(string n);
 	float Arco(string orig, string dist);
 	void Adyacentes(string nodo, float lista[MAX]);
-	void Floyd();
+	void Floyd(Matriz Ady, Matriz C, Matriz P);
+	void Camino(Vertices i, Vertices j, Matriz P);
 	// ...
 
 

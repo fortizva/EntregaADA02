@@ -49,6 +49,23 @@ void Grafo::Adyacentes(string nodo, float lista[MAX]){
 
 }
 
-void Grafo::Floyd(){
-    
+void Grafo::Floyd(Matriz Ady, Matriz C, Matriz P){
+    C = Ady; //Copiamos la matriz de adyacencia en C
+    for(k = 0; k < n; k++)
+    	for(i = 0; i < n; i++)
+    		for(j = 0; j < n; j++)
+    			if(C[i,k]+C[k,j < C[i,j]){
+    				C[i,j] = C[i,k] + C[k,j];
+    				P[i,j] = k;
+    			}
+}
+
+void Grafo::Camino(Vertices i, Vertices j, Matriz P){
+	int k;
+	k = P[i,j];
+	if(k!=0){
+		Camino(i,k)
+		cout << k << ";" << endl;
+		Camino(k,j);
+	}
 }
