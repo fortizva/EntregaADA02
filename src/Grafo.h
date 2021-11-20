@@ -14,25 +14,25 @@
 
 using namespace std;
 
-static const int MAX = 20;    //Constante de valor 20, es de utilidad ya que se indica que como máximo tedremos 14 + 6 nodos.
+class Grafo
+{
+	static const int MAX = 20; //Constante de valor 20, es de utilidad ya que se indica que como máximo tedremos 14 + 6 nodos.
 
-class Grafo {
+	string Cjtovertices[MAX]; //Conjunto de nodos (vértices) que tendrá nuestro Grafo
 
-	string Cjtovertices[MAX];    //Conjunto de nodos (vértices) que tendrá nuestro Grafo
-	
-	float MatAdyacencia[MAX][MAX];    //Conjunto de aristas valuadas  que tendrá nuestro Grafo, (Matriz de Adyacencia)
-	
-// ********************************************************************************
-//	De esta forma tienes lo imprescindible para un grafo; los vértices y las aristas.
-//	Deberás añadir más matrices, si lo consideras necesario para resolver el ejercicio.
-//	Son las matrices que resultan de aplicar los diferentes algoritmos que vayas necesitando.
-// **********************************************************************************************************
+	float MatAdyacencia[MAX][MAX]; //Conjunto de aristas valuadas  que tendrá nuestro Grafo, (Matriz de Adyacencia)
+
+	// ********************************************************************************
+	//	De esta forma tienes lo imprescindible para un grafo; los vértices y las aristas.
+	//	Deberás añadir más matrices, si lo consideras necesario para resolver el ejercicio.
+	//	Son las matrices que resultan de aplicar los diferentes algoritmos que vayas necesitando.
+	// **********************************************************************************************************
+	int ocupados;
 
 	float MatFloyd[MAX][MAX];
 	int MatP[MAX][MAX];
 
 public:
-
 	/*
 	 * PRE: {Las estructuras del grafo han de estar correctamente definidas}
 	 * POST: {-Inicializamos el numero de ocupados 0
@@ -52,21 +52,19 @@ public:
 	 */
 	void CargarDatos();
 
-	
-// ********************************************************************************
-//	Deberás añadir más métodos necesarios para resolver el ejercicio.
-//	Documentarlos de forma correcta.
-// **********************************************************************************************************
+	// ********************************************************************************
+	//	Deberás añadir más métodos necesarios para resolver el ejercicio.
+	//	Documentarlos de forma correcta.
+	// **********************************************************************************************************
 
 	void insertNodo(string n);
 	void insertArco(string orgi, string dest, float dist);
 	bool pertenece(string n);
 	float Arco(string orig, string dist);
 	void Adyacentes(string nodo, float lista[MAX]);
-	void Floyd(Matriz Ady, Matriz C, Matriz P);
-	void Camino(Vertices i, Vertices j, Matriz P);
+	void Floyd();
+	void Camino(int i, int j);
 	// ...
-
 
 	/*
 	 * PRE: {La estructuras del grafo han de estar correctamente definidas, inicializadas y cargadas}
@@ -74,13 +72,6 @@ public:
 	 * Complejidad: O(n^2)
 	 */
 	void MostrarDatos(float matriz[MAX][MAX]);
-
-
-
-
-
 };
 
-
 #endif /* GRAFO_H_ */
-

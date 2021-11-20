@@ -1,71 +1,81 @@
 #include "Grafo.h"
 
-Grafo::Grafo(){
-    cout << "Constructor Grafo" <<endl;
-    // TODO: Crear constructor
-    // TODO: Inicializar el resto de estructuras
-    for(int i=0; i < sizeof(Grafo::Cjtovertices)/sizeof(string); i++){
-        Grafo::Cjtovertices[i] = "";
-    }
-
-
-}
-
-void Grafo::insertNodo(string n){
-    bool insert = false;
-    int i = 0;
-    while(!insert && i<sizeof(Grafo::Cjtovertices)/sizeof(Grafo::Cjtovertices[0])){
-        if(Grafo::Cjtovertices[i]==""){
-            insert = true;
-            Grafo::Cjtovertices[i]=n;
+Grafo::Grafo()
+{
+    cout << "Inicializando Grafo" << endl;
+    this->ocupados = 0;
+    for (int i = 0; i < Grafo::MAX; i++)
+    {
+        this->Cjtovertices[i] = "";
+        for (int j = 0; j < Grafo::MAX; j++)
+        {
+            this->MatAdyacencia[i][j] = (i == j) ? 0 : 9999;
         }
-        i++;
     }
-    
-    if(!insert)
-        cout << "ERROR: No se pudo insertar el elemento \""<<n<<"\" en el conjunto!" << endl;
 }
 
-void Grafo::insertArco(string orgi, string dest, float dist){
-
+void Grafo::insertNodo(string n)
+{
+    if (!this->ocupados >= Grafo::MAX)
+    {
+        this->Cjtovertices[ocupados] = n;
+        this->ocupados++;
+    }
+    else
+        cout << "ERROR: No se pudo insertar el elemento \"" << n << "\" en el conjunto!" << endl;
 }
 
-bool Grafo::pertenece(string n){
+void Grafo::insertArco(string orgi, string dest, float dist)
+{
+}
+
+bool Grafo::pertenece(string n)
+{
     bool found = false;
     int i = 0;
-    while (!found && i < sizeof(Grafo::Cjtovertices)/sizeof(Grafo::Cjtovertices[0])){
-        if(Grafo::Cjtovertices[i]==n)
+    while (!found && i < this->ocupados)
+    {
+        if (this->Cjtovertices[i] == n)
             found = true;
         i++;
     }
     return found;
 }
 
-float Grafo::Arco(string orig, string dist){
+float Grafo::Arco(string orig, string dist)
+{
     return .0f;
 }
 
-void Grafo::Adyacentes(string nodo, float lista[MAX]){
-
+void Grafo::Adyacentes(string nodo, float lista[MAX])
+{
 }
 
-void Grafo::Floyd(Matriz Ady, Matriz C, Matriz P){
-    C = Ady; //Copiamos la matriz de adyacencia en C
-    for(k = 0; k < n; k++)
-    	for(i = 0; i < n; i++)
-    		for(j = 0; j < n; j++)
-    			if(C[i,k]+C[k,j < C[i,j]){
-    				C[i,j] = C[i,k] + C[k,j];
-    				P[i,j] = k;
-    			}
+void Grafo::Floyd()
+{
+    // Copiamos la matriz de adyacencia en C
+    for (int i = 0; i < Grafo::MAX; i++)
+        for (int j = 0; j < Grafo::MAX; j++)
+            this->MatFloyd[i][j] = this->MatAdyacencia[i][j];
+
+    for (int k = 0; k < Grafo::MAX; k++)
+        for (int i = 0; i < Grafo::MAX; i++)
+            for (int j = 0; j < Grafo::MAX; j++)
+                if ((this->MatFloyd[i][k] + this->MatFloyd[k][j]) < this->MatFloyd[i][j])
+                {
+                    this->MatFloyd[i][j] = this->MatFloyd[i][k] + this->MatFloyd[k][j];
+                    this->MatP[i][j] = k;
+                }
 }
 
-void Grafo::Camino(Vertices i, Vertices j, Matriz P){
-	int k;
-	k = P[i,j];
-	if(k!=0){
-		Camino(i,k)
-		cout << k << ";" << endl;
-		Camino(k,j);
-	}
+void Grafo::Camino(int i, int j)
+{
+    int k;
+    k = this->MatP[i][j];
+    if (k != 0)
+    {
+        Camino(i, k);
+        cout << k << ";" << endl;
+        Camino(k, j);
+    }
 }
