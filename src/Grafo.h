@@ -31,7 +31,6 @@ class Grafo
 
 	float MatFloyd[MAX][MAX];
 	int MatP[MAX][MAX];
-
 public:
 	/*
 	 * PRE: {Las estructuras del grafo han de estar correctamente definidas}
@@ -58,7 +57,7 @@ public:
 	// **********************************************************************************************************
 
 	void insertNodo(string n);
-	void insertArco(string orgi, string dest, float dist);
+	void insertArco(string orig, string dest, float dist);
 	bool pertenece(string n);
 	float Arco(string orig, string dist);
 	void Adyacentes(string nodo, float lista[MAX]);
