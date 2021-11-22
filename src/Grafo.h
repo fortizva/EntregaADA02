@@ -31,6 +31,7 @@ class Grafo
 
 	float MatFloyd[MAX][MAX];
 	int MatP[MAX][MAX];
+
 public:
 	/*
 	 * PRE: {Las estructuras del grafo han de estar correctamente definidas}
@@ -63,6 +64,7 @@ public:
 	void Adyacentes(string nodo, float lista[MAX]);
 	void Floyd();
 	void Camino(int i, int j);
+	pair<int, int> getIndex(string orig, string dest);
 	// ...
 
 	/*
@@ -71,6 +73,9 @@ public:
 	 * Complejidad: O(n^2)
 	 */
 	void MostrarDatos(float matriz[MAX][MAX]);
+
+private:
+	void CaminoInt(int i, int j);
 };
 
 #endif /* GRAFO_H_ */

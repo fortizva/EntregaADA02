@@ -1,7 +1,10 @@
 #include "Grafo.h"
 
+ofstream file;
+
 Grafo::Grafo()
 {
+    file.open("datos.out");
     cout << "Inicializando Grafo" << endl;
     this->ocupados = 0;
     for (int i = 0; i < Grafo::MAX; i++)
@@ -10,6 +13,7 @@ Grafo::Grafo()
         for (int j = 0; j < Grafo::MAX; j++)
         {
             this->MatAdyacencia[i][j] = (i == j) ? 0 : 9999;
+            this->MatP[i][j] = -1;
         }
     }
 }
@@ -27,23 +31,9 @@ void Grafo::insertNodo(string n)
 
 void Grafo::insertArco(string orig, string dest, float dist)
 {
-    // Obtener los índices de origen y destino
-    if (this->pertenece(orig) && this->pertenece(dest))
-    {
-        int i = 0, orig_i = -1, dest_i = -1;
-
-        while (i < this->ocupados && (orig_i == -1 || dest_i == -1))
-        {
-            orig_i = (orig == this->Cjtovertices[i]) ? i : orig_i;
-            dest_i = (dest == this->Cjtovertices[i]) ? i : dest_i;
-            i++;
-        }
-
-        this->MatAdyacencia[orig_i][dest_i] = dist;
-        this->MatAdyacencia[dest_i][orig_i] = dist;
-    }
-    else
-        cout << "ERROR: Una de las ciudades \"" << orig << "\" o \"" << dest << "\" no existe!" << endl;
+    pair<int, int> index = getIndex(orig, dest);
+    this->MatAdyacencia[index.first][index.second] = dist;
+    this->MatAdyacencia[index.second][index.first] = dist;
 }
 
 bool Grafo::pertenece(string n)
@@ -61,22 +51,8 @@ bool Grafo::pertenece(string n)
 
 float Grafo::Arco(string orig, string dest)
 {
-    float dist = 9999;
-    // Obtener los índices de origen y destino
-    if (this->pertenece(orig) && this->pertenece(dest))
-    {
-        int i = 0, orig_i = -1, dest_i = -1;
-
-        while (i < this->ocupados && (orig_i == -1 || dest_i == -1))
-        {
-            orig_i = (orig == this->Cjtovertices[i]) ? i : orig_i;
-            dest_i = (dest == this->Cjtovertices[i]) ? i : dest_i;
-            i++;
-        }
-        dist = this->MatAdyacencia[orig_i][dest_i];
-    }
-    else
-        cout << "ERROR: Una de las ciudades \"" << orig << "\" o \"" << dest << "\" no existe!" << endl;
+    pair<int, int> index = getIndex(orig, dest);
+    float dist = this->MatAdyacencia[index.first][index.second];
     return dist;
 }
 
@@ -99,20 +75,50 @@ void Grafo::Floyd()
                     this->MatFloyd[i][j] = this->MatFloyd[i][k] + this->MatFloyd[k][j];
                     this->MatP[i][j] = k;
                 }
-    cout << "MATRIZ FLOYD"<<endl;
+    cout << "MATRIZ FLOYD" << endl;
     this->MostrarDatos(this->MatFloyd);
 }
 
 void Grafo::Camino(int i, int j)
 {
+    cout << this->Cjtovertices[i] << " ";
+    file << this->Cjtovertices[i] << " ";
+    CaminoInt(i, j);
+    cout << this->Cjtovertices[j] << " " << this->MatFloyd[i][j] << endl;
+    file << this->Cjtovertices[j] << " " << this->MatFloyd[i][j] << endl;
+}
+
+void Grafo::CaminoInt(int i, int j)
+{
     int k;
     k = this->MatP[i][j];
-    if (k != 0)
+    if (k != -1)
     {
-        Camino(i, k);
-        cout << k << ";" << endl;
-        Camino(k, j);
+        CaminoInt(i, k);
+        cout << Cjtovertices[k] << " ";
+        file << Cjtovertices[k] << " ";
+        CaminoInt(k, j);
     }
+}
+
+pair<int, int> Grafo::getIndex(string orig, string dest)
+{
+    int i = 0, orig_i = -1, dest_i = -1;
+    // Obtener los índices de origen y destino
+    if (this->pertenece(orig) && this->pertenece(dest))
+    {
+
+        while (i < this->ocupados && (orig_i == -1 || dest_i == -1))
+        {
+            orig_i = (orig == this->Cjtovertices[i]) ? i : orig_i;
+            dest_i = (dest == this->Cjtovertices[i]) ? i : dest_i;
+            i++;
+        }
+    }
+    else
+        cout << "ERROR: Una de las ciudades \"" << orig << "\" o \"" << dest << "\" no existe!" << endl;
+
+    return make_pair(orig_i, dest_i);
 }
 
 void Grafo::MostrarDatos(float matriz[Grafo::MAX][Grafo::MAX])
