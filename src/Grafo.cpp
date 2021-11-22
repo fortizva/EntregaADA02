@@ -1,5 +1,15 @@
+/**
+ * @file Grafo.cpp
+ * @author Francisco Javier Ortiz Valverde
+ * @author Miguel Martínez Redondo
+ * @date 2021-11-22 
+ */
+
 #include "Grafo.h"
 
+#define DATOS "Datos.in"
+
+ifstream data;
 ofstream file;
 
 Grafo::Grafo()
@@ -15,6 +25,62 @@ Grafo::Grafo()
             this->MatAdyacencia[i][j] = (i == j) ? 0 : 9999;
             this->MatP[i][j] = -1;
         }
+    }
+
+    // Cargar fichero
+    cout << "Cargando fichero \"" << DATOS << "\"" << endl;
+    data.open(DATOS);
+    if (!data)
+        cout << "ERROR: No se ha encontrado el fichero " << DATOS << endl;
+    else
+        cout << "Fichero de datos " << DATOS << " cargado correctamente" << endl;
+
+    this->CargarDatos();
+}
+
+void Grafo::CargarDatos()
+{
+    int n;
+    float dist;
+    string str1, str2;
+    data.seekg(0, ios::beg);
+
+    // Insertar nodos
+    data >> n;
+    cout << "Cargando (" << n << ") nodos." << endl;
+    for (int i = 0; i < n; i++)
+    {
+        data >> str1;
+        this->insertNodo(str1);
+        cout << i + 1 << "." << str1 << endl;
+    }
+
+    // Insertar arcos
+    data >> n;
+    cout << "Cargando (" << n << ") arcos." << endl;
+    for (int i = 0; i < n; i++)
+    {
+        data >> str1;
+        data >> str2;
+        data >> dist;
+        cout << i + 1 << ". " << str1 << " - " << str2 << " : " << dist << endl;
+        this->insertArco(str1, str2, dist);
+    }
+}
+
+void Grafo::ejecutarConsultas(){
+    int num = 0;
+    string s1, s2;
+    pair<int, int> index;
+    data >> num;
+
+    for (int i = 0; i < num; i++)
+    {
+        data >> s1;
+        data >> s2;
+        cout << s1 << " - " << s2 << ": " << endl
+             << "\t";
+        this->Camino(s1, s2);
     }
 }
 
@@ -56,10 +122,6 @@ float Grafo::Arco(string orig, string dest)
     return dist;
 }
 
-void Grafo::Adyacentes(string nodo, float lista[MAX])
-{
-}
-
 void Grafo::Floyd()
 {
     // Copiamos la matriz de adyacencia en C
@@ -79,13 +141,14 @@ void Grafo::Floyd()
     this->MostrarDatos(this->MatFloyd);
 }
 
-void Grafo::Camino(int i, int j)
+void Grafo::Camino(string orig, string dest)
 {
-    cout << this->Cjtovertices[i] << " ";
-    file << this->Cjtovertices[i] << " ";
-    CaminoInt(i, j);
-    cout << this->Cjtovertices[j] << " " << this->MatFloyd[i][j] << endl;
-    file << this->Cjtovertices[j] << " " << this->MatFloyd[i][j] << endl;
+    pair<int, int> index = this->getIndex(orig, dest);
+    cout << this->Cjtovertices[index.first] << " ";
+    file << this->Cjtovertices[index.first] << " ";
+    CaminoInt(index.first, index.second);
+    cout << this->Cjtovertices[index.second] << " " << this->MatFloyd[index.first][index.second] << endl;
+    file << this->Cjtovertices[index.second] << " " << this->MatFloyd[index.first][index.second] << endl;
 }
 
 void Grafo::CaminoInt(int i, int j)
